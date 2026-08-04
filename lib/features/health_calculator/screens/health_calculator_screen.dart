@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../onboarding/repository/onboarding_repository.dart';
 import '../cubit/health_calculator_cubit.dart';
 import '../cubit/health_calculator_state.dart';
 import '../models/health_calculator_input.dart';
@@ -19,6 +20,49 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
   final _heightInchController = TextEditingController();
   final _weightController = TextEditingController();
   Gender _selectedGender = Gender.male;
+
+  bool _isPrefilling = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _prefillFromOnboardingProfile();
+  }
+
+  /// Onboarding-e already dewa tottho thakle, sheta diye field gulo
+  /// auto-fill kore dei — user chaile pore edit korte parbe.
+  ///
+  /// NOTE: `OnboardingRepository().loadProfile()` ekta assumption —
+  /// tomar actual repository-r method name ta match na korle eikhane
+  /// update kore dio.
+  Future<void> _prefillFromOnboardingProfile() async {
+    try {
+      final profile = await OnboardingRepository().loadProfile();
+
+      if (profile != null && mounted) {
+        _ageController.text = profile.age.toString();
+        _weightController.text = profile.weightKg % 1 == 0
+            ? profile.weightKg.toInt().toString()
+            : profile.weightKg.toString();
+
+        final totalInches = profile.heightCm / 2.54;
+        final feet = totalInches ~/ 12;
+        final inches = (totalInches - feet * 12).round();
+        _heightFeetController.text = feet.toString();
+        _heightInchController.text = inches.toString();
+
+        // Onboarding-er Gender enum ei screen-er Gender enum theke
+        // alada type hote pare, tai `.name` diye safely map kora holo.
+        _selectedGender =
+        profile.gender.name == 'female' ? Gender.female : Gender.male;
+      }
+    } catch (_) {
+      // Kono saved profile na thakle ba load fail korle,
+      // user just khali field diye normally continue korbe.
+    } finally {
+      if (mounted) setState(() => _isPrefilling = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -76,6 +120,11 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
         },
         builder: (context, state) {
           final isLoading = state is HealthCalculatorLoading;
+
+          if (_isPrefilling) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -123,10 +172,10 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
                     ),
                     child: isLoading
                         ? const SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
-                          )
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
+                    )
                         : const Text('গণনা করুন', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
@@ -139,15 +188,15 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
   }
 
   Widget _buildLabel(String text) => Padding(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-      );
+    padding: const EdgeInsets.only(bottom: 6),
+    child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+  );
 
   Widget _buildTextField(
-    TextEditingController controller,
-    String hint,
-    TextInputType keyboardType,
-  ) {
+      TextEditingController controller,
+      String hint,
+      TextInputType keyboardType,
+      ) {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
