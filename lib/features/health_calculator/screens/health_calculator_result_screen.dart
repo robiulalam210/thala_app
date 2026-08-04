@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thala_app/health/widgets/bmi_scale_widget.dart';
-import 'package:thala_app/health/widgets/premium_locked_card.dart';
 
-import 'health_calculator_cubit/health_calculator_cubit.dart';
-import 'model/health_calculator_input.dart';
-import 'model/health_calculator_result.dart';
-
-
+import '../cubit/health_calculator_cubit.dart';
+import '../cubit/health_calculator_state.dart';
+import '../models/health_calculator_input.dart';
+import '../models/health_calculator_result.dart';
+import '../widgets/bmi_scale_widget.dart';
+import '../widgets/premium_locked_card.dart';
 
 class HealthCalculatorResultScreen extends StatelessWidget {
   const HealthCalculatorResultScreen({super.key});
@@ -183,16 +182,16 @@ class HealthCalculatorResultScreen extends StatelessWidget {
       children: _dietTipsBn
           .map(
             (tip) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('•  ', style: TextStyle(fontWeight: FontWeight.bold)),
-              Expanded(child: Text(tip, style: const TextStyle(fontSize: 13, height: 1.4))),
-            ],
-          ),
-        ),
-      )
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('•  ', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Expanded(child: Text(tip, style: const TextStyle(fontSize: 13, height: 1.4))),
+                ],
+              ),
+            ),
+          )
           .toList(),
     );
   }

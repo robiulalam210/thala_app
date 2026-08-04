@@ -1,4 +1,3 @@
-
 import 'health_calculator_input.dart';
 
 enum BmiCategory {

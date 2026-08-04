@@ -1,17 +1,26 @@
-part of 'health_calculator_cubit.dart';
+import 'package:equatable/equatable.dart';
 
-@immutable
-sealed class HealthCalculatorState {}
+import '../models/health_calculator_result.dart';
 
-final class HealthCalculatorInitial extends HealthCalculatorState {}
+abstract class HealthCalculatorState extends Equatable {
+  const HealthCalculatorState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class HealthCalculatorInitial extends HealthCalculatorState {
+  const HealthCalculatorInitial();
+}
+
 class HealthCalculatorLoading extends HealthCalculatorState {
-   HealthCalculatorLoading();
+  const HealthCalculatorLoading();
 }
 
 class HealthCalculatorError extends HealthCalculatorState {
   final String message;
 
-   HealthCalculatorError(this.message);
+  const HealthCalculatorError(this.message);
 
   @override
   List<Object?> get props => [message];
@@ -22,7 +31,7 @@ class HealthCalculatorLoaded extends HealthCalculatorState {
   final bool isPersonalizedTipsUnlocked;
   final bool isHealthScoreUnlocked;
 
-   HealthCalculatorLoaded({
+  const HealthCalculatorLoaded({
     required this.result,
     this.isPersonalizedTipsUnlocked = false,
     this.isHealthScoreUnlocked = false,
@@ -36,16 +45,16 @@ class HealthCalculatorLoaded extends HealthCalculatorState {
     return HealthCalculatorLoaded(
       result: result ?? this.result,
       isPersonalizedTipsUnlocked:
-      isPersonalizedTipsUnlocked ?? this.isPersonalizedTipsUnlocked,
+          isPersonalizedTipsUnlocked ?? this.isPersonalizedTipsUnlocked,
       isHealthScoreUnlocked: isHealthScoreUnlocked ?? this.isHealthScoreUnlocked,
     );
   }
 
   @override
   List<Object?> get props => [
-    result.bmi,
-    result.bmr,
-    isPersonalizedTipsUnlocked,
-    isHealthScoreUnlocked,
-  ];
+        result.bmi,
+        result.bmr,
+        isPersonalizedTipsUnlocked,
+        isHealthScoreUnlocked,
+      ];
 }

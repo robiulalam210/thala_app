@@ -1,9 +1,7 @@
-
 import 'package:dartz/dartz.dart';
 
-import '../model/health_calculator_input.dart';
-import '../model/health_calculator_result.dart';
-
+import '../models/health_calculator_input.dart';
+import '../models/health_calculator_result.dart';
 
 abstract class HealthCalculatorRepository {
   Either<String, HealthCalculatorResult> calculate(HealthCalculatorInput input);
@@ -49,7 +47,7 @@ class HealthCalculatorRepositoryImpl implements HealthCalculatorRepository {
           bmiCategory: bmiCategory,
           bmr: _round2(bmr),
           tdeeByActivity: tdeeByActivity.map(
-                (key, value) => MapEntry(key, _round2(value)),
+            (key, value) => MapEntry(key, _round2(value)),
           ),
           idealWeightKg: _round2(idealWeight),
           idealWeightMinKg: _round2(idealWeightMin),
