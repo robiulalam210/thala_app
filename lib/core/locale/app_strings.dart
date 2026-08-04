@@ -119,6 +119,21 @@ class AppStrings {
     },
     'feature_more': {AppLanguage.bn: 'আরও ফিচার', AppLanguage.en: 'More Features'},
     'feature_more_sub': {AppLanguage.bn: 'শীঘ্রই আসছে', AppLanguage.en: 'Coming soon'},
+    'feature_food_calorie': {AppLanguage.bn: 'খাদ্যের ক্যালরি তালিকা', AppLanguage.en: 'Food Calorie List'},
+    'feature_food_calorie_sub': {
+      AppLanguage.bn: 'বিভিন্ন খাদ্যের ক্যালরি সম্পর্কে জানুন',
+      AppLanguage.en: 'Look up calories in common foods',
+    },
+    'feature_progress': {AppLanguage.bn: 'আমার অগ্রগতি', AppLanguage.en: 'My Progress'},
+    'feature_progress_sub': {
+      AppLanguage.bn: 'ওজন ও শরীরের মাপ ট্র্যাক করুন',
+      AppLanguage.en: 'Track your weight and measurements',
+    },
+    'feature_diet_tips': {AppLanguage.bn: 'ডায়েট টিপস', AppLanguage.en: 'Diet Tips'},
+    'feature_diet_tips_sub': {
+      AppLanguage.bn: 'ডায়েট সম্পর্কে দরকারি তথ্য',
+      AppLanguage.en: 'Useful articles about dieting',
+    },
     'stat_calories': {AppLanguage.bn: 'আজকের ক্যালরি', AppLanguage.en: "Today's Calories"},
     'stat_water': {AppLanguage.bn: 'পানি (লিটার)', AppLanguage.en: 'Water (L)'},
     'stat_workout': {AppLanguage.bn: 'এই সপ্তাহে ওয়ার্কআউট', AppLanguage.en: 'Workouts this week'},

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/exercise_cubit.dart';
 import '../cubit/exercise_state.dart';
+import '../cubit/workout_history_cubit.dart';
 import '../models/exercise_model.dart';
 import '../widgets/exercise_card_widget.dart';
 import 'exercise_detail_sheet.dart';
@@ -36,7 +37,12 @@ class ExerciseListTab extends StatelessWidget {
                     .map(
                       (exercise) => ExerciseCardWidget(
                         exercise: exercise,
-                        onTap: () => ExerciseDetailSheet.show(context, exercise),
+                        onTap: () async {
+                          final entry = await ExerciseDetailSheet.show(context, exercise);
+                          if (entry != null && context.mounted) {
+                            context.read<WorkoutHistoryCubit>().addEntry(entry);
+                          }
+                        },
                       ),
                     )
                     .toList(),

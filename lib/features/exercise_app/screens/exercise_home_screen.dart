@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/exercise_cubit.dart';
 import '../cubit/workout_history_cubit.dart';
+import '../repository/workout_history_repository.dart';
 import '../cubit/workout_program_cubit.dart';
 import '../repository/exercise_repository.dart';
 import '../repository/workout_program_repository.dart';
@@ -19,7 +20,7 @@ class ExerciseHomeScreen extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => ExerciseCubit(ExerciseRepositoryImpl())..loadExercises()),
         BlocProvider(create: (_) => WorkoutProgramCubit(WorkoutProgramRepositoryImpl())..loadPrograms()),
-        BlocProvider(create: (_) => WorkoutHistoryCubit()..loadHistory()),
+        BlocProvider(create: (_) => WorkoutHistoryCubit(WorkoutHistoryRepository())..loadHistory()),
       ],
       child: DefaultTabController(
         length: 3,

@@ -16,4 +16,7 @@ class OnboardingRepository {
     if (raw == null) return null;
     return OnboardingProfile.fromJson(jsonDecode(raw) as Map<String, dynamic>);
   }
+
+  /// লগআউট — প্রোফাইল ও অনবোর্ডিং-সম্পন্ন ফ্ল্যাগ মুছে ফেলে, ইউজারকে আবার অনবোর্ডিং-এ ফেরত পাঠাতে
+  Future<void> logout() => LocalPreferences.clearOnboardingData();
 }

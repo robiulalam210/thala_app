@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/exercise_model.dart';
+import '../models/workout_history_entry_model.dart';
 import '../widgets/difficulty_badge.dart';
 import 'active_workout_screen.dart';
 
@@ -9,8 +10,9 @@ class ExerciseDetailSheet extends StatelessWidget {
 
   const ExerciseDetailSheet({super.key, required this.exercise});
 
-  static Future<void> show(BuildContext context, Exercise exercise) {
-    return showModalBottomSheet(
+  /// Workout complete hole WorkoutHistoryEntry return kore, na hole null
+  static Future<WorkoutHistoryEntry?> show(BuildContext context, Exercise exercise) {
+    return showModalBottomSheet<WorkoutHistoryEntry?>(
       context: context,
       backgroundColor: const Color(0xFF0E0E11),
       isScrollControlled: true,
@@ -98,11 +100,13 @@ class ExerciseDetailSheet extends StatelessWidget {
             const SizedBox(height: 12),
             Center(
               child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  // Sheet age pop na kore age workout push kori, result await kore tarpor
+                  // sheet-ke shei result soho pop kori — caller (list tab) eta history te save korbe.
+                  final result = await Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => ActiveWorkoutScreen(exercise: exercise)),
                   );
+                  if (context.mounted) Navigator.of(context).pop(result);
                 },
                 icon: const Icon(Icons.play_arrow, color: Color(0xFF56CCF2)),
                 label: const Text('ওয়ার্কআউট শুরু করুন', style: TextStyle(color: Color(0xFF56CCF2), fontWeight: FontWeight.w600)),

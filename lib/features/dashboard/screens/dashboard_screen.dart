@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/locale/app_strings.dart';
 import '../../../core/locale/locale_cubit.dart';
 import '../../../features/settings/widgets/settings_sheet.dart';
+import '../../diet_tips/screens/diet_tips_list_screen.dart';
+import '../../food_calorie/screens/food_calorie_home_screen.dart';
 import '../../health_calculator/cubit/health_calculator_cubit.dart';
 import '../../health_calculator/repository/health_calculator_repository.dart';
 import '../../health_calculator/screens/health_calculator_screen.dart';
@@ -11,6 +13,7 @@ import '../../meal_planner/cubit/meal_plan_cubit.dart';
 import '../../meal_planner/repository/meal_plan_repository.dart';
 import '../../meal_planner/screens/meal_plan_list_screen.dart';
 import '../../exercise_app/screens/exercise_home_screen.dart';
+import '../../progress/screens/my_progress_screen.dart';
 import '../models/dashboard_feature_model.dart';
 import '../widgets/dashboard_feature_card.dart';
 import '../widgets/dashboard_stat_chip.dart';
@@ -59,6 +62,36 @@ class DashboardScreen extends StatelessWidget {
         gradientColors: const [Color(0xFFF2994A), Color(0xFFEB5757)],
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const ExerciseHomeScreen()),
+        ),
+      ),
+      DashboardFeature(
+        id: 'food_calorie',
+        title: t('feature_food_calorie'),
+        subtitle: t('feature_food_calorie_sub'),
+        icon: Icons.set_meal_outlined,
+        gradientColors: const [Color(0xFFAE9421), Color(0xFF6E5E12)],
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const FoodCalorieHomeScreen()),
+        ),
+      ),
+      DashboardFeature(
+        id: 'progress',
+        title: t('feature_progress'),
+        subtitle: t('feature_progress_sub'),
+        icon: Icons.show_chart,
+        gradientColors: const [Color(0xFF8E6EEB), Color(0xFF5B3FBF)],
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const MyProgressScreen()),
+        ),
+      ),
+      DashboardFeature(
+        id: 'diet_tips',
+        title: t('feature_diet_tips'),
+        subtitle: t('feature_diet_tips_sub'),
+        icon: Icons.article_outlined,
+        gradientColors: const [Color(0xFF56CCF2), Color(0xFF2D9CDB)],
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const DietTipsListScreen()),
         ),
       ),
       DashboardFeature(

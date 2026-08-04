@@ -1,22 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class WorkoutHistoryEntry extends Equatable {
-  final String exerciseName;
-  final DateTime completedAt;
-  final int totalSets;
-  final int durationSeconds;
-
-  const WorkoutHistoryEntry({
-    required this.exerciseName,
-    required this.completedAt,
-    required this.totalSets,
-    required this.durationSeconds,
-  });
-
-  @override
-  List<Object?> get props => [exerciseName, completedAt, totalSets, durationSeconds];
-}
+import '../models/workout_history_entry_model.dart';
+import '../repository/workout_history_repository.dart';
 
 abstract class WorkoutHistoryState extends Equatable {
   const WorkoutHistoryState();
@@ -39,19 +25,18 @@ class WorkoutHistoryLoaded extends WorkoutHistoryState {
 }
 
 class WorkoutHistoryCubit extends Cubit<WorkoutHistoryState> {
-  WorkoutHistoryCubit() : super(const WorkoutHistoryLoading());
+  final WorkoutHistoryRepository _repository;
 
-  // TODO: local DB / API theke workout history load korben
+  WorkoutHistoryCubit(this._repository) : super(const WorkoutHistoryLoading());
+
   Future<void> loadHistory() async {
     emit(const WorkoutHistoryLoading());
-    await Future.delayed(const Duration(milliseconds: 300));
-    emit(const WorkoutHistoryLoaded([]));
+    final entries = await _repository.getEntries();
+    emit(WorkoutHistoryLoaded(entries));
   }
 
-  void addEntry(WorkoutHistoryEntry entry) {
-    final current = state;
-    if (current is WorkoutHistoryLoaded) {
-      emit(WorkoutHistoryLoaded([entry, ...current.entries]));
-    }
+  Future<void> addEntry(WorkoutHistoryEntry entry) async {
+    await _repository.addEntry(entry);
+    await loadHistory();
   }
 }
