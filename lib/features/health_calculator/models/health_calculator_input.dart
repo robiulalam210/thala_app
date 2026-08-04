@@ -1,4 +1,3 @@
-
 enum Gender { male, female }
 
 enum ActivityLevel {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/health_calculator_result.dart';
-
+import '../models/health_calculator_result.dart';
 
 class BmiScaleWidget extends StatelessWidget {
   final double bmi;
@@ -47,10 +46,10 @@ class BmiScaleWidget extends StatelessWidget {
                       children: _segments
                           .map(
                             (segment) => Expanded(
-                          flex: ((segment.end - segment.start) * 10).round(),
-                          child: Container(height: 14, color: segment.color),
-                        ),
-                      )
+                              flex: ((segment.end - segment.start) * 10).round(),
+                              child: Container(height: 14, color: segment.color),
+                            ),
+                          )
                           .toList(),
                     ),
                   ),
@@ -84,12 +83,12 @@ class BmiScaleWidget extends StatelessWidget {
                   border: isActive ? Border.all(color: segment.color, width: 1.5) : null,
                   boxShadow: isActive
                       ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ]
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
                       : null,
                 ),
                 child: Text(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-import 'health_calculator_cubit/health_calculator_cubit.dart';
+import '../cubit/health_calculator_cubit.dart';
+import '../cubit/health_calculator_state.dart';
+import '../models/health_calculator_input.dart';
 import 'health_calculator_result_screen.dart';
-import 'model/health_calculator_input.dart';
 
 class HealthCalculatorScreen extends StatefulWidget {
   const HealthCalculatorScreen({super.key});
@@ -123,10 +123,10 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
                     ),
                     child: isLoading
                         ? const SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
-                    )
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
+                          )
                         : const Text('গণনা করুন', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
@@ -139,15 +139,15 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
   }
 
   Widget _buildLabel(String text) => Padding(
-    padding: const EdgeInsets.only(bottom: 6),
-    child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-  );
+        padding: const EdgeInsets.only(bottom: 6),
+        child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+      );
 
   Widget _buildTextField(
-      TextEditingController controller,
-      String hint,
-      TextInputType keyboardType,
-      ) {
+    TextEditingController controller,
+    String hint,
+    TextInputType keyboardType,
+  ) {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,

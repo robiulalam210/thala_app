@@ -1,26 +1,22 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/health_calculator_input.dart';
-import '../model/health_calculator_result.dart';
+import '../models/health_calculator_input.dart';
 import '../repository/health_calculator_repository.dart';
-
-part 'health_calculator_state.dart';
-
+import 'health_calculator_state.dart';
 
 class HealthCalculatorCubit extends Cubit<HealthCalculatorState> {
   final HealthCalculatorRepository _repository;
 
-  HealthCalculatorCubit(this._repository) : super( HealthCalculatorInitial());
+  HealthCalculatorCubit(this._repository) : super(const HealthCalculatorInitial());
 
   void calculate(HealthCalculatorInput input) {
-    emit( HealthCalculatorLoading());
+    emit(const HealthCalculatorLoading());
 
     final result = _repository.calculate(input);
 
     result.fold(
-          (error) => emit(HealthCalculatorError(error)),
-          (data) => emit(HealthCalculatorLoaded(result: data)),
+      (error) => emit(HealthCalculatorError(error)),
+      (data) => emit(HealthCalculatorLoaded(result: data)),
     );
   }
 
@@ -40,5 +36,5 @@ class HealthCalculatorCubit extends Cubit<HealthCalculatorState> {
     }
   }
 
-  void reset() => emit( HealthCalculatorInitial());
+  void reset() => emit(const HealthCalculatorInitial());
 }
