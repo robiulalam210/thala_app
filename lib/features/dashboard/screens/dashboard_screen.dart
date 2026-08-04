@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/locale/app_strings.dart';
+import '../../../core/locale/locale_cubit.dart';
+import '../../../features/settings/widgets/settings_sheet.dart';
 import '../../health_calculator/cubit/health_calculator_cubit.dart';
 import '../../health_calculator/repository/health_calculator_repository.dart';
 import '../../health_calculator/screens/health_calculator_screen.dart';
@@ -16,12 +19,12 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   // ভবিষ্যতে নতুন মডিউল যোগ করতে শুধু এখানে একটা DashboardFeature entry বাড়ালেই হবে
-  List<DashboardFeature> _buildFeatures(BuildContext context) {
+  List<DashboardFeature> _buildFeatures(BuildContext context, String Function(String) t) {
     return [
       DashboardFeature(
         id: 'health_calculator',
-        title: 'স্বাস্থ্য ক্যালকুলেটর',
-        subtitle: 'BMI, BMR ও আদর্শ ওজন হিসাব করুন',
+        title: t('feature_health_calculator'),
+        subtitle: t('feature_health_calculator_sub'),
         icon: Icons.monitor_weight_outlined,
         gradientColors: const [Color(0xFF6E9EEB), Color(0xFF4A5FD1)],
         onTap: () => Navigator.of(context).push(
@@ -35,8 +38,8 @@ class DashboardScreen extends StatelessWidget {
       ),
       DashboardFeature(
         id: 'meal_planner',
-        title: 'খাবার পরিকল্পনাকারী',
-        subtitle: 'রেসিপি খুঁজুন ও ডায়েট প্ল্যান দেখুন',
+        title: t('feature_meal_planner'),
+        subtitle: t('feature_meal_planner_sub'),
         icon: Icons.restaurant_menu,
         gradientColors: const [Color(0xFF3FBF8F), Color(0xFF1E9E76)],
         onTap: () => Navigator.of(context).push(
@@ -50,55 +53,57 @@ class DashboardScreen extends StatelessWidget {
       ),
       DashboardFeature(
         id: 'exercise',
-        title: 'ব্যায়াম',
-        subtitle: 'ওয়ার্কআউট প্রোগ্রাম ও লাইভ সেশন',
+        title: t('feature_exercise'),
+        subtitle: t('feature_exercise_sub'),
         icon: Icons.fitness_center,
         gradientColors: const [Color(0xFFF2994A), Color(0xFFEB5757)],
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const ExerciseHomeScreen()),
         ),
       ),
-      const DashboardFeature(
+      DashboardFeature(
         id: 'coming_soon',
-        title: 'আরও ফিচার',
-        subtitle: 'শীঘ্রই আসছে',
+        title: t('feature_more'),
+        subtitle: t('feature_more_sub'),
         icon: Icons.auto_awesome_outlined,
-        gradientColors: [Colors.transparent, Colors.transparent],
+        gradientColors: const [Colors.transparent, Colors.transparent],
         isComingSoon: true,
       ),
     ];
   }
 
-  List<DashboardStat> get _stats => const [
-        DashboardStat(label: 'আজকের ক্যালরি', value: '১৮৪০', icon: Icons.local_fire_department, color: Color(0xFFF2994A)),
-        DashboardStat(label: 'পানি (লিটার)', value: '১.৮', icon: Icons.water_drop_outlined, color: Color(0xFF56CCF2)),
-        DashboardStat(label: 'ওয়ার্কআউট', value: '৩ দিন', icon: Icons.fitness_center, color: Color(0xFF6FCF97)),
+  List<DashboardStat> _stats(String Function(String) t) => [
+        DashboardStat(label: t('stat_calories'), value: '১৮৪০', icon: Icons.local_fire_department, color: const Color(0xFFF2994A)),
+        DashboardStat(label: t('stat_water'), value: '১.৮', icon: Icons.water_drop_outlined, color: const Color(0xFF56CCF2)),
+        DashboardStat(label: t('stat_workout'), value: '৩', icon: Icons.fitness_center, color: const Color(0xFF6FCF97)),
       ];
 
   @override
   Widget build(BuildContext context) {
-    final features = _buildFeatures(context);
+    final language = context.watch<LocaleCubit>().state;
+    String t(String key) => AppStrings.get(key, language);
+    final features = _buildFeatures(context, t);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0E0E11),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            _buildHeader(),
+            _buildHeader(context, t),
             const SizedBox(height: 24),
             Row(
               children: [
-                for (int i = 0; i < _stats.length; i++) ...[
-                  DashboardStatChip(stat: _stats[i]),
-                  if (i != _stats.length - 1) const SizedBox(width: 12),
+                for (int i = 0; i < _stats(t).length; i++) ...[
+                  DashboardStatChip(stat: _stats(t)[i]),
+                  if (i != _stats(t).length - 1) const SizedBox(width: 12),
                 ],
               ],
             ),
             const SizedBox(height: 28),
-            const Text(
-              'ফিচারসমূহ',
-              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              t('features'),
+              style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 14),
             GridView.builder(
@@ -119,7 +124,8 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context, String Function(String) t) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Container(
@@ -132,23 +138,29 @@ class DashboardScreen extends StatelessWidget {
           child: const Icon(Icons.person, color: Colors.white),
         ),
         const SizedBox(width: 14),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('স্বাগতম 👋', style: TextStyle(color: Colors.grey, fontSize: 13)),
-              SizedBox(height: 2),
-              Text('আপনার হেলথ ড্যাশবোর্ড', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(t('welcome_back'), style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.5), fontSize: 13)),
+              const SizedBox(height: 2),
+              Text(
+                t('your_dashboard'),
+                style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1B1B1F),
-            borderRadius: BorderRadius.circular(12),
+        GestureDetector(
+          onTap: () => SettingsSheet.show(context),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.settings_outlined, color: theme.colorScheme.onSurface.withOpacity(0.8), size: 22),
           ),
-          child: const Icon(Icons.notifications_none, color: Colors.white70, size: 22),
         ),
       ],
     );

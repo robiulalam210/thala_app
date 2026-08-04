@@ -20,21 +20,5 @@ class HealthCalculatorCubit extends Cubit<HealthCalculatorState> {
     );
   }
 
-  /// প্রিমিয়াম আনলক সফল হওয়ার পর UI থেকে কল করবেন
-  /// (পেমেন্ট/সাবস্ক্রিপশন চেক করার লজিক এখানে বসাতে পারেন — এখন সরাসরি আনলক করছে)
-  void unlockPersonalizedTips() {
-    final current = state;
-    if (current is HealthCalculatorLoaded) {
-      emit(current.copyWith(isPersonalizedTipsUnlocked: true));
-    }
-  }
-
-  void unlockHealthScore() {
-    final current = state;
-    if (current is HealthCalculatorLoaded) {
-      emit(current.copyWith(isHealthScoreUnlocked: true));
-    }
-  }
-
   void reset() => emit(const HealthCalculatorInitial());
 }

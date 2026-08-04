@@ -8,7 +8,6 @@ class WorkoutProgram {
   final int weeks;
   final int daysPerWeek;
   final String goalTag;
-  final bool isLocked;
 
   const WorkoutProgram({
     required this.id,
@@ -18,6 +17,5 @@ class WorkoutProgram {
     required this.weeks,
     required this.daysPerWeek,
     required this.goalTag,
-    this.isLocked = false,
   });
 }

@@ -6,7 +6,6 @@ import '../cubit/health_calculator_state.dart';
 import '../models/health_calculator_input.dart';
 import '../models/health_calculator_result.dart';
 import '../widgets/bmi_scale_widget.dart';
-import '../widgets/premium_locked_card.dart';
 
 class HealthCalculatorResultScreen extends StatelessWidget {
   const HealthCalculatorResultScreen({super.key});
@@ -55,33 +54,18 @@ class HealthCalculatorResultScreen extends StatelessWidget {
                   child: _buildDietTipsSection(),
                 ),
                 const SizedBox(height: 16),
-                PremiumLockedCard(
-                  titleBn: 'পার্সোনালাইজড হেলথ টিপস',
-                  subtitleBn: 'আপনার BMI ক্যাটাগরি অনুযায়ী কাস্টমাইজড সুপারিশ পান',
-                  onUnlockTap: () => context.read<HealthCalculatorCubit>().unlockPersonalizedTips(),
-                ),
-                if (state.isPersonalizedTipsUnlocked)
-                  _sectionCard(
-                    title: 'আপনার জন্য কাস্টমাইজড টিপস',
-                    child: Text(
-                      result.bmiCategory.adviceBn,
-                      style: const TextStyle(fontSize: 13, height: 1.5),
-                    ),
+                _sectionCard(
+                  title: 'আপনার জন্য কাস্টমাইজড টিপস',
+                  child: Text(
+                    result.bmiCategory.adviceBn,
+                    style: const TextStyle(fontSize: 13, height: 1.5),
                   ),
-                const SizedBox(height: 12),
-                PremiumLockedCard(
-                  titleBn: 'আপনার ব্যক্তিগত হেলথ স্কোর',
-                  subtitleBn: 'বিস্তারিত মেট্রিক্স ও ঝুঁকি মূল্যায়নসহ স্বাস্থ্য ট্র্যাক করুন',
-                  onUnlockTap: () => context.read<HealthCalculatorCubit>().unlockHealthScore(),
                 ),
-                if (state.isHealthScoreUnlocked)
-                  _sectionCard(
-                    title: 'হেলথ স্কোর',
-                    child: const Text(
-                      'বিস্তারিত মেট্রিক্স ও ঝুঁকি মূল্যায়ন এখানে দেখানো হবে।',
-                      style: TextStyle(fontSize: 13, height: 1.5),
-                    ),
-                  ),
+                const SizedBox(height: 16),
+                _sectionCard(
+                  title: 'হেলথ স্কোর',
+                  child: _buildHealthScoreSection(result),
+                ),
               ],
             ),
           );
@@ -171,6 +155,45 @@ class HealthCalculatorResultScreen extends StatelessWidget {
         const Text(
           'এই রেঞ্জ BMI ২০-২৫ এর ওপর ভিত্তি করে হিসাব করা হয়েছে।',
           style: TextStyle(fontSize: 12, color: Colors.black54),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHealthScoreSection(HealthCalculatorResult result) {
+    // BMI 22.5 (normal range er moddhobindu) theke koto dure — tar upor base kore ekta simple 0-100 score
+    final distanceFromIdeal = (result.bmi - 22.5).abs();
+    final score = (100 - distanceFromIdeal * 6).clamp(0, 100).round();
+    final scoreColor = score >= 80
+        ? const Color(0xFF6FCF97)
+        : score >= 50
+            ? const Color(0xFFF2C94C)
+            : const Color(0xFFEB5757);
+
+    return Row(
+      children: [
+        SizedBox(
+          width: 64,
+          height: 64,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CircularProgressIndicator(
+                value: score / 100,
+                strokeWidth: 6,
+                backgroundColor: Colors.grey.shade300,
+                valueColor: AlwaysStoppedAnimation(scoreColor),
+              ),
+              Text('$score', style: TextStyle(fontWeight: FontWeight.bold, color: scoreColor)),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            'আপনার BMI ও বয়স বিবেচনা করে এই স্কোর তৈরি — এটা একটা প্রাথমিক ধারণা, চূড়ান্ত মেডিকেল মূল্যায়ন নয়।',
+            style: TextStyle(fontSize: 12.5, color: Colors.grey.shade600, height: 1.4),
+          ),
         ),
       ],
     );
