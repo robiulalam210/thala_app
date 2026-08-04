@@ -49,4 +49,11 @@ class LocalPreferences {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyProfileJson, json);
   }
+
+  /// Logout/reset — profile o onboarding flag muche fela hoy, kintu bhasha/theme preference thake jay
+  static Future<void> clearOnboardingData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyOnboardingComplete);
+    await prefs.remove(_keyProfileJson);
+  }
 }

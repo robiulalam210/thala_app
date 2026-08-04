@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/workout_session_cubit.dart';
 import '../cubit/workout_session_state.dart';
 import '../models/exercise_model.dart';
+import '../models/workout_history_entry_model.dart';
 import '../widgets/cancel_workout_dialog.dart';
 import '../widgets/difficulty_badge.dart';
 
@@ -46,7 +47,17 @@ class _ActiveWorkoutView extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('ওয়ার্কআউট সম্পন্ন হয়েছে! 💪')),
           );
-          Navigator.of(context).pop();
+          // Navigator route boundary er karone ekhane sorasori WorkoutHistoryCubit access kora jay na —
+          // tai completed entry-ta pop() er result hishebe pathacchi, caller (ExerciseDetailSheet -> ExerciseListTab)
+          // shetake receive kore history te save korbe.
+          Navigator.of(context).pop(
+            WorkoutHistoryEntry(
+              exerciseName: exercise.name,
+              completedAt: DateTime.now(),
+              totalSets: state.completedSets.length,
+              durationSeconds: state.elapsedSeconds,
+            ),
+          );
         }
       },
       builder: (context, state) {

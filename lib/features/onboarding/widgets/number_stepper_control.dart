@@ -16,37 +16,84 @@ class NumberStepperControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _roundButton(context, Icons.remove, onDecrement),
-        SizedBox(
-          width: 140,
-          child: Column(
-            children: [
-              Text(
-                valueLabel,
-                style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
-              ),
-              Text(unitLabel, style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface.withOpacity(0.5))),
-            ],
+        _RoundButton(icon: Icons.remove_rounded, onTap: onDecrement),
+        Flexible(
+          child: Container(
+            constraints: const BoxConstraints(minWidth: 84, maxWidth: 150),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: colorScheme.onSurface.withOpacity(0.06)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 180),
+                    transitionBuilder: (child, animation) =>
+                        FadeTransition(opacity: animation, child: child),
+                    child: Text(
+                      valueLabel,
+                      key: ValueKey(valueLabel),
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w800,
+                        color: colorScheme.primary,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  unitLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurface.withOpacity(0.4),
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        _roundButton(context, Icons.add, onIncrement),
+        _RoundButton(icon: Icons.add_rounded, onTap: onIncrement),
       ],
     );
   }
+}
 
-  Widget _roundButton(BuildContext context, IconData icon, VoidCallback onTap) {
-    final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        radius: 28,
-        backgroundColor: theme.colorScheme.surface,
-        child: Icon(icon, color: theme.colorScheme.onSurface),
+class _RoundButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  const _RoundButton({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: colorScheme.primary.withValues(alpha: 0.1),
+      shape: const CircleBorder(),
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const CircleBorder(),
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: Icon(icon, color: colorScheme.primary, size: 20),
+        ),
       ),
     );
   }

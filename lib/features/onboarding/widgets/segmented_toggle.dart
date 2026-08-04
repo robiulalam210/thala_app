@@ -16,13 +16,13 @@ class SegmentedToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(26),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -35,30 +35,35 @@ class SegmentedToggle extends StatelessWidget {
   }
 
   Widget _segment(BuildContext context, String label, bool selected, VoidCallback onTap) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 11),
         decoration: BoxDecoration(
-          color: selected ? theme.colorScheme.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (selected) ...[
-              Icon(Icons.check, size: 14, color: Colors.black),
-              const SizedBox(width: 4),
-            ],
-            Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: selected ? Colors.black : theme.colorScheme.onSurface.withOpacity(0.7),
-              ),
+          color: selected ? colorScheme.primary : Colors.transparent,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: selected
+              ? [
+            BoxShadow(
+              color: colorScheme.primary.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-          ],
+          ]
+              : [],
+        ),
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 220),
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+            color: selected ? colorScheme.onPrimary : colorScheme.onSurface.withOpacity(0.55),
+          ),
+          child: Text(label),
         ),
       ),
     );

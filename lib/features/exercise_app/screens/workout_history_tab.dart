@@ -24,12 +24,12 @@ class WorkoutHistoryTab extends StatelessWidget {
                 Icon(Icons.history, size: 56, color: Colors.grey.shade600),
                 const SizedBox(height: 20),
                 Text(
-                  'No workout history yet',
+                  'কোনো ওয়ার্কআউট ইতিহাস নেই',
                   style: TextStyle(fontSize: 17, color: Colors.grey.shade500, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Start exercising to see your progress here',
+                  'ব্যায়াম শুরু করলে এখানে আপনার প্রোগ্রেস দেখা যাবে',
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
                 ),
               ],
@@ -42,6 +42,7 @@ class WorkoutHistoryTab extends StatelessWidget {
           itemCount: entries.length,
           itemBuilder: (context, index) {
             final entry = entries[index];
+            final minutes = (entry.durationSeconds / 60).ceil();
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(14),
@@ -50,10 +51,27 @@ class WorkoutHistoryTab extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(entry.exerciseName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text('${entry.totalSets} sets', style: TextStyle(color: Colors.grey.shade400, fontSize: 12)),
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundColor: const Color(0xFF56CCF2).withOpacity(0.15),
+                    child: const Icon(Icons.check, size: 16, color: Color(0xFF56CCF2)),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(entry.exerciseName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 2),
+                        Text(
+                          '${entry.completedAt.day}/${entry.completedAt.month}/${entry.completedAt.year} · $minutes মিনিট',
+                          style: TextStyle(color: Colors.grey.shade500, fontSize: 11.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text('${entry.totalSets} সেট', style: TextStyle(color: Colors.grey.shade400, fontSize: 12)),
                 ],
               ),
             );
