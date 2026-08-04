@@ -94,14 +94,14 @@ class DashboardScreen extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const DietTipsListScreen()),
         ),
       ),
-      DashboardFeature(
-        id: 'coming_soon',
-        title: t('feature_more'),
-        subtitle: t('feature_more_sub'),
-        icon: Icons.auto_awesome_outlined,
-        gradientColors: const [Colors.transparent, Colors.transparent],
-        isComingSoon: true,
-      ),
+      // DashboardFeature(
+      //   id: 'coming_soon',
+      //   title: t('feature_more'),
+      //   subtitle: t('feature_more_sub'),
+      //   icon: Icons.auto_awesome_outlined,
+      //   gradientColors: const [Colors.transparent, Colors.transparent],
+      //   isComingSoon: true,
+      // ),
     ];
   }
 
