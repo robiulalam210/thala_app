@@ -151,8 +151,10 @@ class _HealthCalculatorScreenState extends State<HealthCalculatorScreen> {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
+      style: const TextStyle(color: Colors.black87, fontSize: 15),
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: TextStyle(color: Colors.grey.shade500),
         filled: true,
         fillColor: Colors.grey.shade100,
         border: OutlineInputBorder(

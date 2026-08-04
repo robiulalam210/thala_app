@@ -27,7 +27,6 @@ class WorkoutProgramRepositoryImpl implements WorkoutProgramRepository {
       weeks: 12,
       daysPerWeek: 3,
       goalTag: 'MuscleGain',
-      isLocked: false,
     ),
     WorkoutProgram(
       id: 'p2',
@@ -37,7 +36,6 @@ class WorkoutProgramRepositoryImpl implements WorkoutProgramRepository {
       weeks: 12,
       daysPerWeek: 6,
       goalTag: 'MuscleGain',
-      isLocked: true,
     ),
     WorkoutProgram(
       id: 'p3',
@@ -47,7 +45,6 @@ class WorkoutProgramRepositoryImpl implements WorkoutProgramRepository {
       weeks: 16,
       daysPerWeek: 4,
       goalTag: 'MuscleGain',
-      isLocked: true,
     ),
   ];
 }

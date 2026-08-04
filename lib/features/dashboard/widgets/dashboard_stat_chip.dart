@@ -9,11 +9,13 @@ class DashboardStatChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
         decoration: BoxDecoration(
-          color: const Color(0xFF1B1B1F),
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
@@ -29,13 +31,13 @@ class DashboardStatChip extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               stat.value,
-              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 2),
             Text(
               stat.label,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 10.5),
+              style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.5), fontSize: 10.5),
             ),
           ],
         ),

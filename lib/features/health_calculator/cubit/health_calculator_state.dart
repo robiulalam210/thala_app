@@ -28,33 +28,9 @@ class HealthCalculatorError extends HealthCalculatorState {
 
 class HealthCalculatorLoaded extends HealthCalculatorState {
   final HealthCalculatorResult result;
-  final bool isPersonalizedTipsUnlocked;
-  final bool isHealthScoreUnlocked;
 
-  const HealthCalculatorLoaded({
-    required this.result,
-    this.isPersonalizedTipsUnlocked = false,
-    this.isHealthScoreUnlocked = false,
-  });
-
-  HealthCalculatorLoaded copyWith({
-    HealthCalculatorResult? result,
-    bool? isPersonalizedTipsUnlocked,
-    bool? isHealthScoreUnlocked,
-  }) {
-    return HealthCalculatorLoaded(
-      result: result ?? this.result,
-      isPersonalizedTipsUnlocked:
-          isPersonalizedTipsUnlocked ?? this.isPersonalizedTipsUnlocked,
-      isHealthScoreUnlocked: isHealthScoreUnlocked ?? this.isHealthScoreUnlocked,
-    );
-  }
+  const HealthCalculatorLoaded({required this.result});
 
   @override
-  List<Object?> get props => [
-        result.bmi,
-        result.bmr,
-        isPersonalizedTipsUnlocked,
-        isHealthScoreUnlocked,
-      ];
+  List<Object?> get props => [result.bmi, result.bmr];
 }
